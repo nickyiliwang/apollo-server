@@ -6,6 +6,7 @@ const typeDefs = gql`
   # scalar types (ID, String, Boolean, Int)
   # ! means required/nor null
   # []! array of the specified type, cannot be null, but it can be empty.
+  # enum args can pass in SMALL or LARGE to missionPatch
 
   type Launch {
     id: ID!
@@ -35,6 +36,24 @@ const typeDefs = gql`
   enum PatchSize {
     SMALL
     LARGE
+  }
+
+  type Query {
+    launches: [Launch]! # all launches
+    launch(id: ID): Launch # single
+    me: User # login info
+  }
+
+  type Mutation {
+    bookTrips(launchIds: [ID]!): TripUpdateResponse!
+    cancelTrip(launchId: ID!): TripUpdateResponse!
+    login(email: String): String #login token
+  }
+
+  type TripUpdateResponse {
+    success: Boolean!
+    message: String
+    launches: [Launch]
   }
 `;
 
