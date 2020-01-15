@@ -1,5 +1,5 @@
-const { DataSource } = require('apollo-datasource');
-const isEmail = require('isemail');
+const { DataSource } = require("apollo-datasource");
+const isEmail = require("isemail");
 
 class UserAPI extends DataSource {
   constructor({ store }) {
@@ -14,6 +14,8 @@ class UserAPI extends DataSource {
    * here, so we can know about the user making requests
    */
   initialize(config) {
+    // using this method to access our graph API's context
+    //  this.context is A graph API's context is an object that's shared among every resolver in a GraphQL
     this.context = config.context;
   }
 
@@ -22,6 +24,9 @@ class UserAPI extends DataSource {
    * have to be. If the user is already on the context, it will use that user
    * instead
    */
+  // https://stackoverflow.com/questions/57107654/can-someone-please-explain-me-this-createemail-emailarg
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Assigning_to_new_variable_names
+  // syntaxtic sugar renaming the passing prop
   async findOrCreateUser({ email: emailArg } = {}) {
     const email =
       this.context && this.context.user ? this.context.user.email : emailArg;
@@ -50,7 +55,7 @@ class UserAPI extends DataSource {
   async bookTrip({ launchId }) {
     const userId = this.context.user.id;
     const res = await this.store.trips.findOrCreate({
-      where: { userId, launchId },
+      where: { userId, launchId }
     });
     return res && res.length ? res[0].get() : false;
   }
@@ -63,7 +68,7 @@ class UserAPI extends DataSource {
   async getLaunchIdsByUser() {
     const userId = this.context.user.id;
     const found = await this.store.trips.findAll({
-      where: { userId },
+      where: { userId }
     });
     return found && found.length
       ? found.map(l => l.dataValues.launchId).filter(l => !!l)
@@ -74,7 +79,7 @@ class UserAPI extends DataSource {
     if (!this.context || !this.context.user) return false;
     const userId = this.context.user.id;
     const found = await this.store.trips.findAll({
-      where: { userId, launchId },
+      where: { userId, launchId }
     });
     return found && found.length > 0;
   }
