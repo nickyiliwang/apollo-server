@@ -7,6 +7,7 @@ const typeDefs = gql`
   # ! means required/nor null
   # []! array of the specified type, cannot be null, but it can be empty.
   # enum args can pass in SMALL or LARGE to missionPatch
+  # launches: [Launch]! all launches
 
   type Launch {
     id: ID!
@@ -39,9 +40,9 @@ const typeDefs = gql`
   }
 
   type Query {
-    launches: [Launch]! # all launches
-    launch(id: ID): Launch # single
-    me: User # login info
+    launches: [Launch]!
+    launch(id: ID): Launch
+    me: User
   }
 
   type Mutation {

@@ -1,6 +1,6 @@
 // The first argument "_" to our top-level resolvers, parent, is always blank because it refers to the root of our graph
 
-// The second argument "__" refers to any arguments passed into our query, which we use in our launch query to fetch a launch by its id. 
+// The second argument "__" refers to any arguments passed into our query, which we use in our launch query to fetch a launch by its id.
 
 module.exports = {
   Query: {
